@@ -2,7 +2,8 @@ use std::env;
 use std::path::PathBuf;
 use dzi::TileCreator;
 
-pub fn main() {
+#[tokio::main]
+async fn main() {
     let args = env::args();
     if args.len() < 2 {
         eprintln!("Usage: dzi path/to/image");
@@ -17,7 +18,7 @@ pub fn main() {
     }
     match TileCreator::new_from_image_path(p.as_path()) {
         Ok(ic) => {
-            match ic.create_tiles() {
+            match ic.create_tiles().await {
                 Ok(_) => {},
                 Err(e) => {
                     eprintln!("Could not tile image:\n\t {}", e);

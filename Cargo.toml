@@ -8,6 +8,18 @@ homepage = "https://github.com/n-k/dzi"
 repository = "https://github.com/n-k/dzi"
 license = "BSD-2-Clause"
 
+[lib]
+name = "dzi"
+
+[[bin]]
+name = "dzi"
+required-features = ["async-tokio"]
+
+[features]
+default = ["async-tokio"]
+async-tokio = ["tokio"]
+
 [dependencies]
 anyhow = "1"
 image = "0.23"
+tokio = { version = "1", features = ["full"], optional = true }
