@@ -6,6 +6,8 @@ authors = ["n-k <nipunkumar@outlook.com>"]
 description = "Rust crate and command line utility for deep zom images (DZI)"
 homepage = "https://github.com/n-k/dzi"
 repository = "https://github.com/n-k/dzi"
+license = "BSD"
+license-file = "LICENSE.txt"
 
 [dependencies]
 anyhow = "1"
