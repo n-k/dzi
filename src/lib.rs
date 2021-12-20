@@ -1,23 +1,30 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use anyhow::bail;
 use image::{DynamicImage, GenericImageView};
 
-pub struct ImageCreator {
-    dest_path: String,
+/// A tile creator, this struct and associated functions
+/// implement the DZI tiler
+pub struct TileCreator {
+    /// path of destination directory where tiles will be stored
+    dest_path: PathBuf,
+    /// source image
     image: DynamicImage,
+    /// size of individual tiles in pixels
     tile_size: u32,
+    /// number of pixels neighboring tiles overlap
     tile_overlap: u32,
+    /// total number of levels of tiles
     levels: u32,
 }
 
-impl ImageCreator {
-    pub fn new_from_image_path(image_path: &str) -> anyhow::Result<Self> {
+impl TileCreator {
+    pub fn new_from_image_path(image_path: &Path) -> anyhow::Result<Self> {
         let im = image::open(image_path)?;
         let (h, w) = im.dimensions();
         let levels: u32 = (h.max(w) as f64).log2().ceil() as u32 + 1;
         Ok(Self {
-            dest_path: format!("{}_files", image_path.to_string()),
+            dest_path: image_path.join("_files"),
             image: im,
             tile_size: 254,
             tile_overlap: 1,
@@ -43,8 +50,7 @@ impl ImageCreator {
 
     /// Create tiles for a level
     fn create_level(&self, level: u32) -> anyhow::Result<()> {
-        let p = PathBuf::new()
-            .join(self.dest_path.as_str())
+        let p = self.dest_path
             .join(format!("{}", level));
         std::fs::create_dir_all(p.clone())?;
         let mut li = self.get_level_image(level)?;
@@ -131,26 +137,27 @@ impl ImageCreator {
 
 #[cfg(test)]
 mod tests {
-    use crate::ImageCreator;
+    use std::path::PathBuf;
+    use crate::TileCreator;
 
     #[test]
     fn test_info() {
-        let path = format!("{}/test_data/test.jpg", env!("CARGO_MANIFEST_DIR"));
-        let ic = ImageCreator::new_from_image_path(path.as_str());
+        let path = PathBuf::from(format!("{}/test_data/test.jpg", env!("CARGO_MANIFEST_DIR")));
+        let ic = TileCreator::new_from_image_path(path.as_path());
         assert!(ic.is_ok());
         let ic = ic.unwrap();
         assert_eq!(ic.levels, 14);
         let (w, h) = ic.get_dimensions(ic.levels - 1).unwrap();
-        assert_eq!(w, 5472);
-        assert_eq!(h, 3648);
+        assert_eq!(w, 5184);
+        assert_eq!(h, 3456);
 
         let (w, h) = ic.get_dimensions(1).unwrap();
         assert_eq!(w, 2);
         assert_eq!(h, 1);
 
         let (c, r) = ic.get_tile_count(13).unwrap();
-        assert_eq!(c, 22);
-        assert_eq!(r, 15);
+        assert_eq!(c, 21);
+        assert_eq!(r, 14);
 
         ic.create_tiles().unwrap();
     }

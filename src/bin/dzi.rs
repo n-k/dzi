@@ -1,6 +1,6 @@
 use std::env;
 use std::path::PathBuf;
-use dzi::ImageCreator;
+use dzi::TileCreator;
 
 pub fn main() {
     let args = env::args();
@@ -15,7 +15,7 @@ pub fn main() {
         eprintln!("No such file {:?}", &p);
         return;
     }
-    match ImageCreator::new_from_image_path(image_path.as_str()) {
+    match TileCreator::new_from_image_path(p.as_path()) {
         Ok(ic) => {
             match ic.create_tiles() {
                 Ok(_) => {},
