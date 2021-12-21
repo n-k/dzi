@@ -15,17 +15,17 @@ pub fn main() {
         eprintln!("No such file {:?}", &p);
         return;
     }
-    match TileCreator::new_from_image_path(p.as_path()) {
+    match TileCreator::new_from_image_path(p.as_path(), 254, 1) {
         Ok(ic) => {
             match ic.create_tiles() {
                 Ok(_) => {},
                 Err(e) => {
-                    eprintln!("Could not tile image:\n\t {}", e);
+                    eprintln!("Could not tile image:\n\t {:?}", e);
                 }
             }
         },
         Err(e) => {
-            eprintln!("Could not create tiler:\n\t {}", e);
+            eprintln!("Could not create tiler:\n\t {:?}", e);
         }
     }
 }
