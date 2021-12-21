@@ -36,7 +36,9 @@ pub struct TileCreator {
 
 impl TileCreator {
     pub fn new_from_image_path(image_path: &Path, tile_size: u32, tile_overlap: u32) -> DZIResult<Self> {
-        let im = image::open(image_path)?;
+        let im = image::io::Reader::open(image_path)?
+            .with_guessed_format()?
+            .decode()?;
         let (h, w) = im.dimensions();
         let levels: u32 = (h.max(w) as f64).log2().ceil() as u32 + 1;
 
