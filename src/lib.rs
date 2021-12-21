@@ -21,17 +21,17 @@ pub type DZIResult<T, E = TilingError> = Result<T, E>;
 /// implement the DZI tiler
 pub struct TileCreator {
     /// path of destination directory where tiles will be stored
-    dest_path: PathBuf,
+    pub dest_path: PathBuf,
     /// path of .dzi descriptor file to be created
-    dzi_file_path: PathBuf,
+    pub dzi_file_path: PathBuf,
     /// source image
-    image: DynamicImage,
+    pub image: DynamicImage,
     /// size of individual tiles in pixels
-    tile_size: u32,
+    pub tile_size: u32,
     /// number of pixels neighboring tiles overlap
-    tile_overlap: u32,
+    pub tile_overlap: u32,
     /// total number of levels of tiles
-    levels: u32,
+    pub levels: u32,
 }
 
 impl TileCreator {
