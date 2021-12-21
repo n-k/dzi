@@ -68,7 +68,7 @@ impl TileCreator {
     }
 
     /// Create DZI tiles
-    pub fn create_tiles(&self) -> DZIResult<()> {
+    pub fn create_tiles(&self) -> DZIResult<(PathBuf, PathBuf)> {
         for l in 0..self.levels {
             self.create_level(l)?;
         }
@@ -86,7 +86,7 @@ impl TileCreator {
         h);
         let mut f = std::fs::File::create(self.dzi_file_path.as_path())?;
         f.write_all(dzi.as_bytes())?;
-        Ok(())
+        Ok((self.dzi_file_path.clone(), self.dest_path.clone()))
     }
 
     /// Check if level is valid
