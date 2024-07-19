@@ -1,6 +1,6 @@
+use dzi::TileCreator;
 use std::env;
 use std::path::PathBuf;
-use dzi::TileCreator;
 
 pub fn main() {
     let args = env::args();
@@ -16,12 +16,10 @@ pub fn main() {
         return;
     }
     match TileCreator::new_from_image_path(p.as_path(), 254, 1) {
-        Ok(ic) => {
-            match ic.create_tiles() {
-                Ok(_) => {},
-                Err(e) => {
-                    eprintln!("Could not tile image:\n\t {:?}", e);
-                }
+        Ok(ic) => match ic.create_tiles() {
+            Ok(_) => {}
+            Err(e) => {
+                eprintln!("Could not tile image:\n\t {:?}", e);
             }
         },
         Err(e) => {

@@ -11,4 +11,7 @@ license = "BSD-2-Clause"
 [dependencies]
 anyhow = "1"
 thiserror = "1"
-image = "0.23"
+image = "0.25"
+
+[dev-dependencies]
+temp-dir = "0.1.13"
