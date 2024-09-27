@@ -42,7 +42,7 @@ impl TileCreator {
         tile_size: u32,
         tile_overlap: u32,
     ) -> DZIResult<Self> {
-        let im = image::io::Reader::open(image_path)?
+        let im = image::ImageReader::open(image_path)?
             .with_guessed_format()?
             .decode()?;
         let (width, height) = im.dimensions();
@@ -108,7 +108,7 @@ impl TileCreator {
 
     fn calculate_levels(src_image_width: u32, src_image_height: u32) -> u32 {
         let levels: u32 = (src_image_height.max(src_image_width) as f64).log2().ceil() as u32 + 1;
-        return levels;
+        levels
     }
 
     /// Create DZI tiles
