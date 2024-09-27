@@ -9,7 +9,6 @@ repository = "https://github.com/n-k/dzi"
 license = "BSD-2-Clause"
 
 [dependencies]
-anyhow = "1"
 thiserror = "1"
 image = "0.25"
 
